@@ -1,6 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:proyecto_ps/screen/gps_access_screen.dart';
 import 'package:proyecto_ps/screen/screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -76,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         widget = const WelcomeScreen();
         break;
       case 3:
-        widget = ReportScreen();
+        widget = const ReportScreen();
         break;
       case 4:
         widget = const ProfileScreen();

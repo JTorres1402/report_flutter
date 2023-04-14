@@ -13,3 +13,18 @@ Future<List<ReporteModel>> loadReporte() async {
   }
   return reportes;
 }
+
+Future<String> postReporte(tipo, latitud, longitud, comentario, idUsuario) async {
+  final url = Uri.parse('https://apiproyectops.azurewebsites.net/api/reporte'); 
+  final headers = {'Content-Type': 'application/json'};
+  final body = jsonEncode({'tipo': tipo, 'latitud': latitud, 'longitud': longitud, 'comentario': comentario, 'id_usuario': idUsuario});
+  final response = await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    return responseData;
+  } else {
+    final responseData = jsonDecode(response.body);
+    return responseData ;
+  }
+}
