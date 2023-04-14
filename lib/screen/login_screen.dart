@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ps/screen/screen.dart';
+import 'package:proyecto_ps/service/usuario_service.dart';
 
 import '../widget/pass_input.dart';
 import '../widget/show_message_widget.dart';
@@ -115,28 +116,56 @@ class _LoginScreenState extends State<LoginScreen> {
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15)),
                                 )),
-                            onPressed: () {
+                            onPressed: () async {
                               if (emailController.text != '' &&
                                   passController.text != '') {
-                                showDialog<String>(
+                                final user = emailController.text;
+                                final pass = passController.text;
+                                //login(user, pass);
+                                final reponse = await login(user, pass);
+                                // ignore: use_build_context_synchronously
+                                showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
                                     title: const Text('Bienvenido'),
-                                    content: const Text('Datos corretos'),
+                                    content: Text(reponse.toString()),
                                     actions: <Widget>[
                                       TextButton(
-                                        onPressed: () => {
-                                          Navigator.pop(context, 'OK'),
-                                          emailController.clear(),
-                                          passController.clear(),
-                                          isChecked = false,
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomeScreen()),
-                                          )
-                                        },
+                                        onPressed: reponse == 'OK'
+                                            ? () {
+                                                showDialog<String>(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
+                                                    title: Text('Dialogo'),
+                                                    content: Text(reponse),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () => {
+                                                          Navigator.pop(
+                                                              context, 'OK'),
+                                                          emailController
+                                                              .clear(),
+                                                          passController
+                                                              .clear(),
+                                                          isChecked = false,
+                                                          Navigator.of(context)
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const HomeScreen()),
+                                                          )
+                                                        },
+                                                        child: const Text('OK'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }
+                                            : null,
                                         child: const Text('OK'),
                                       ),
                                     ],
@@ -153,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                               }
                               if (!isChecked) {
+                                // ignore: use_build_context_synchronously
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
