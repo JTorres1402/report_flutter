@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proyecto_ps/blocs/gps/gps_bloc.dart';
+import 'package:proyecto_ps/screen/login_screen.dart';
 import 'package:proyecto_ps/screen/screen.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: 'home',
       routes: {
-        'home': (context) => const HomeScreen(),
+        'home': (context) => const LoginScreen(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -28,6 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xff3e13b5),
         title: const Center(
           child: Text(
             'Perfil',

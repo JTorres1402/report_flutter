@@ -26,6 +26,8 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xff3e13b5),
         title: const Center(
           child: Text(
             'Nuevo reporte',
@@ -70,8 +72,10 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                         MaterialButton(
                           padding: const EdgeInsets.all(15),
-                          color: Colors.blue,
-                          shape: const StadiumBorder(),
+                          color: const Color(0xff3e13b5),
+                          shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(15)),
                           child: const Text(
                             'Enviar reporte',
                             style: TextStyle(

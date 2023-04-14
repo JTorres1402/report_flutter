@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // backgroundColor: Colors.blue[300],
         bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.transparent,
-          color: Colors.blue,
+          color: const Color(0xff3e13b5),
           items: items,
           index: index,
           onTap: (selctedIndex) {
