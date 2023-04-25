@@ -3,26 +3,14 @@ import '../models/usuario.dart';
 import '../service/usuario_service.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final int id;
+  const ProfileScreen({super.key, required this.id});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late List<UsuarioModel> _usuario = [];
-
-  int i = 0;
-  @override
-  void initState() {
-    super.initState();
-    loadUsuiario().then((value) {
-      setState(() {
-        _usuario = value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -38,8 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: FutureBuilder(
-        future: loadUsuiario(),
+        future: loadUsuiariobyid(widget.id),
         builder: (context, AsyncSnapshot<List<UsuarioModel>> snapshot) {
+          // Usuario user = Usuario.fromJson(jsonEncode(snapshot));
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data == null) {
               return const Center(child: Text('Algo salió mal'));
@@ -58,9 +47,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fit: StackFit.expand,
                           children: [
                             Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
                               child: Container(
                                 height: innerHeight * 0.72,
                                 width: innerWidth,
@@ -71,24 +57,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: Column(
                                   children: [
                                     const SizedBox(
-                                      height: 40,
+                                      height: 30,
                                     ),
                                     Text(
-                                      '${_usuario[0].nombre} ${_usuario[0].apellido}',
+                                      snapshot.data![0].nombre,
                                       style: const TextStyle(
-                                        color: Colors.blue,
+                                        color: Colors.black,
                                         fontFamily: 'Nunito',
                                         fontSize: 37,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
                                     ),
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Column(
+                                        Row(
                                           children: [
                                             Text(
                                               'Identificacion',
@@ -102,19 +88,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               height: 5,
                                             ),
                                             Text(
-                                              '${_usuario[i].idUsuario}',
+                                              '${snapshot.data![0].idUsuario}',
                                               style: const TextStyle(
-                                                color: Colors.blue,
+                                                color: Colors.black,
                                                 fontFamily: 'Nunito',
                                                 fontSize: 20,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        Column(
+                                        Row(
                                           children: [
                                             Text(
                                               'Telefono',
@@ -128,11 +112,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               height: 5,
                                             ),
                                             Text(
-                                              '${_usuario[i].telefono}',
+                                              '${snapshot.data![0].telefono}',
                                               style: const TextStyle(
-                                                color: Colors.blue,
+                                                color: Colors.black,
                                                 fontFamily: 'Nunito',
                                                 fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Correo',
+                                              style: TextStyle(
+                                                color: Colors.grey[700],
+                                                fontFamily: 'Nunito',
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              snapshot.data![0].correo,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: 'Nunito',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
@@ -173,18 +182,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+class Usuario {
+  String nombre;
+  String apellido;
+  int id;
+  String correo;
+  int telefono;
+  String rol;
 
+  Usuario(
+      {required this.nombre,
+      required this.apellido,
+      required this.id,
+      required this.correo,
+      required this.telefono,
+      required this.rol});
 
-
-        // ListView.builder(
-        //       itemCount: 1,
-        //       itemBuilder: (context, index) {
-        //         return Padding(
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: ListTile(
-        //             title: Text(snapshot.data![index].nombre),
-        //             subtitle: Text(snapshot.data![index].apellido),
-        //           ),
-        //         );
-        //       },
-        //     );
+  factory Usuario.fromJson(Map<String, dynamic> json) {
+    return Usuario(
+      nombre: json['nombre'],
+      apellido: json['apellido'],
+      id: json['id_usuario'],
+      correo: json['correo'],
+      telefono: json['telefono'],
+      rol: json['rol'],
+    );
+  }
+}

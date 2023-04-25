@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_ps/screen/screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +11,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late SharedPreferences _prefs;
+
+  void _initPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  int _obtenerId() {
+    return _prefs.getInt('id') ?? 0;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initPrefs();
+  }
+
   final items = const [
     Icon(
       Icons.list,
@@ -66,7 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget widget;
     switch (index) {
       case 0:
-        widget = const ListReportScreen();
+        widget = ListReportScreen(
+          id: _obtenerId(),
+        );
         break;
       case 1:
         widget = const Maps();
@@ -75,10 +94,14 @@ class _HomeScreenState extends State<HomeScreen> {
         widget = const WelcomeScreen();
         break;
       case 3:
-        widget = const ReportScreen();
+        widget = ReportScreen(
+          id: _obtenerId(),
+        );
         break;
       case 4:
-        widget = const ProfileScreen();
+        widget = ProfileScreen(
+          id: _obtenerId(),
+        );
         break;
       default:
         widget = const WelcomeScreen();

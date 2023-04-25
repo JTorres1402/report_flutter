@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:proyecto_ps/screen/screen.dart';
 import 'package:proyecto_ps/service/usuario_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 import '../widget/pass_input.dart';
-import '../widget/show_message_widget.dart';
 import '../widget/user_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,13 +18,36 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  late SharedPreferences _prefs;
   bool passToggle = true;
   bool isChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPrefs();
+  }
+
+  void _initPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  void _setId(int id) {
+    _prefs.setInt('id', id);
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    StylishDialog loading = StylishDialog(
+      context: context,
+      alertType: StylishDialogType.PROGRESS,
+      style: DefaultStyle(
+        progressColor: const Color(0xff3e13b5),
+      ),
+      title: const Text('Cargando'),
+    );
     return Scaffold(
       body: SizedBox(
         height: height,
@@ -60,26 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: PasswordInput(inputController: passController),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                                activeColor: const Color(0xff3e13b5),
-                                value: isChecked,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isChecked = value!;
-                                  });
-                                }),
-                            const Text(
-                              'Aceptar terminos',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
                         ),
                         SizedBox(
                           height: (height * 2) / 100,
@@ -119,78 +124,34 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               if (emailController.text != '' &&
                                   passController.text != '') {
+                                loading.show();
                                 final user = emailController.text;
                                 final pass = passController.text;
-                                //login(user, pass);
                                 final reponse = await login(user, pass);
-                                // ignore: use_build_context_synchronously
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Bienvenido'),
-                                    content: Text(reponse.toString()),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: reponse == 'OK'
-                                            ? () {
-                                                showDialog<String>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          AlertDialog(
-                                                    title: Text('Dialogo'),
-                                                    content: Text(reponse),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () => {
-                                                          Navigator.pop(
-                                                              context, 'OK'),
-                                                          emailController
-                                                              .clear(),
-                                                          passController
-                                                              .clear(),
-                                                          isChecked = false,
-                                                          Navigator.of(context)
-                                                              .push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        const HomeScreen()),
-                                                          )
-                                                        },
-                                                        child: const Text('OK'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            : null,
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                Persona personLogin =
+                                    Persona.fromJson(jsonDecode(reponse));
+                                if (personLogin.message == 'OK') {
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pushNamed(context, "inicio");
+                                  _setId(personLogin.id!);
+                                } else {
+                                  loading.dismiss();
+                                  // ignore: use_build_context_synchronously
+                                  StylishDialog(
+                                    context: context,
+                                    alertType: StylishDialogType.ERROR,
+                                    title: const Text('Error'),
+                                    content: Text(personLogin.message),
+                                  ).show();
+                                }
                               } else {
-                                showDialog(
+                                StylishDialog(
                                   context: context,
-                                  builder: (BuildContext context) =>
-                                      const ShowMessage(
-                                    title: 'Error',
-                                    content: 'Debes ingresar los datos',
-                                  ),
-                                );
-                              }
-                              if (!isChecked) {
-                                // ignore: use_build_context_synchronously
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      const ShowMessage(
-                                    title: 'Error',
-                                    content: 'Debes aceptar los terminos',
-                                  ),
-                                );
+                                  alertType: StylishDialogType.ERROR,
+                                  title: const Text('Error'),
+                                  content:
+                                      const Text('Debes ingresar los datos'),
+                                ).show();
                               }
                             },
                             child: const Text(
@@ -209,6 +170,23 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Persona {
+  String message;
+  int? id;
+
+  Persona({
+    required this.message,
+    this.id,
+  });
+
+  factory Persona.fromJson(Map<String, dynamic> json) {
+    return Persona(
+      message: json['message'],
+      id: json['id'],
     );
   }
 }

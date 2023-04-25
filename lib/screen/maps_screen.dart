@@ -87,7 +87,7 @@ class _MapsState extends State<Maps> {
         backgroundColor: const Color(0xff3e13b5),
         title: const Center(
           child: Text(
-            'Reportes',
+            'Mapa de reportes',
             style: TextStyle(fontSize: 27),
           ),
         ),
@@ -121,20 +121,6 @@ class _MapsState extends State<Maps> {
               : const GpsAccessScreen();
         },
       ),
-
-      // _reportes.isEmpty
-      //     ? const Center(
-      //         child: CircularProgressIndicator(),
-      //       )
-      //     : SafeArea(
-      //         child: GoogleMap(
-      //           initialCameraPosition: Maps._kGooglePlex,
-      //           mapType: MapType.normal,
-      //           myLocationButtonEnabled: true,
-      //           myLocationEnabled: true,
-      //           markers: Set<Marker>.of(_markers),
-      //         ),
-      //       ),
     );
   }
 }

@@ -1,21 +1,22 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:proyecto_ps/blocs/gps/gps_bloc.dart';
 import 'package:proyecto_ps/screen/gps_access_screen.dart';
 import 'package:proyecto_ps/service/reporte_service.dart';
-
-import '../widget/show_message_widget.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 class ReportScreen extends StatefulWidget {
-  const ReportScreen({super.key});
+  final int id;
+  const ReportScreen({super.key, required this.id});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-
   final TextEditingController _controllerCometario = TextEditingController();
 
   List<String> items = ['Robo', 'Accidente', 'Incendio'];
@@ -24,6 +25,14 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    StylishDialog loading = StylishDialog(
+      context: context,
+      alertType: StylishDialogType.PROGRESS,
+      style: DefaultStyle(
+        progressColor: const Color(0xff3e13b5),
+      ),
+      title: const Text('Cargando'),
+    );
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -74,8 +83,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           padding: const EdgeInsets.all(15),
                           color: const Color(0xff3e13b5),
                           shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(15)),
+                              borderRadius: BorderRadius.circular(15)),
                           child: const Text(
                             'Enviar reporte',
                             style: TextStyle(
@@ -85,33 +93,50 @@ class _ReportScreenState extends State<ReportScreen> {
                           ),
                           onPressed: () async {
                             if (_controllerCometario.text != '') {
-                              Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                              var now = DateTime.now();
+                              var formatter = DateFormat("dd/MM/yyyy");
+                              String date = formatter.format(now);
+                              loading.show();
+                              Position position =
+                                  await Geolocator.getCurrentPosition(
+                                      desiredAccuracy: LocationAccuracy.high);
                               final value = _controllerCometario.text;
                               final longitud = position.longitude;
                               final latitud = position.latitude;
-                              const usu = 41;
-                              postReporte(selectItem, latitud, longitud, value, usu);
-                              final  reponse = await postReporte(selectItem, latitud, longitud, value, usu);
-                              // ignore: use_build_context_synchronously
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => ShowMessage(
-                                  title: 'Enviado',
-                                  content: reponse,
-                                ),
-                              );
+                              var usu = widget.id;
+                              final reponse = await postReporte(selectItem,
+                                  latitud, longitud, value, usu, date);
+
+                              if (reponse != '') {
+                                loading.dismiss();
+                                StylishDialog(
+                                  context: context,
+                                  alertType: StylishDialogType.SUCCESS,
+                                  title: const Text('Enviado'),
+                                  content: Text(reponse),
+                                ).show();
+                              } else {
+                                loading.dismiss();
+                                StylishDialog(
+                                  context: context,
+                                  alertType: StylishDialogType.ERROR,
+                                  title: const Text('Error'),
+                                  content:
+                                      const Text('Error al enviar el reporte'),
+                                ).show();
+                              }
                               setState(() {
-                              selectItem = items.first;
-                              _controllerCometario.clear();
-                            });
-                            }else{
-                              showDialog(
+                                selectItem = items.first;
+                                _controllerCometario.clear();
+                              });
+                            } else {
+                              StylishDialog(
                                 context: context,
-                                builder: (BuildContext context) => const ShowMessage(
-                                  title: 'Error',
-                                  content: 'Debes ingresar el comentario',
-                                ),
-                              );
+                                alertType: StylishDialogType.ERROR,
+                                title: const Text('Error'),
+                                content:
+                                    const Text('Debes ingresar el comentario'),
+                              ).show();
                             }
                           },
                         )
