@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widget/infocard.dart';
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -16,8 +18,22 @@ class WelcomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Text('welcome'),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 40),
+            child: InfoCard(
+              title: "Bienvenidos a SafeZone",
+              body:
+                  'Aquí puedes realizar informes de emergencia al instante, pruébalo es rápido y seguro 😉',
+              subInfoTitle: 'Información adicional',
+              subInfoText: 'Mas de 100 descargas',
+              subIcon: const Icon(Icons.download_outlined,
+                  color: Color(0xff3e13b5), size: 45),
+              onMoreTap: () {},
+            ),
+          ),
+        ],
       ),
     );
   }

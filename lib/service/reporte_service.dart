@@ -3,6 +3,7 @@ import 'package:proyecto_ps/models/reporte.dart';
 import 'package:http/http.dart' as http;
 
 String _baseUrl = 'https://apipr0yect.azurewebsites.net/api/reporte';
+
 Future<List<ReporteModel>> loadReportebyid(int id) async {
   // ignore: prefer_interpolation_to_compose_strings
   final url = Uri.parse('$_baseUrl/' + id.toString());

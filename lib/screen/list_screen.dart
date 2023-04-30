@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
 import '../models/reporte.dart';
 import '../service/reporte_service.dart';
+import '../widget/circular_progess.dart';
 
 class ListReportScreen extends StatefulWidget {
   final int id;
@@ -112,8 +113,14 @@ class _ListReportScreenState extends State<ListReportScreen> {
             );
           }
           return const Center(
-            child: CircularProgressIndicator(),
-          );
+              child: DottedCircularProgressIndicatorFb(
+            size: 30,
+            numDots: 9,
+            dotSize: 3,
+            defaultDotColor: Color(0xff3e13b5),
+            currentDotColor: Colors.orange,
+            secondsPerRotation: 1,
+          ));
         },
       ),
     );

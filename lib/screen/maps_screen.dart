@@ -8,6 +8,8 @@ import 'package:proyecto_ps/screen/gps_access_screen.dart';
 import 'package:proyecto_ps/service/reporte_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../widget/circular_progess.dart';
+
 class Maps extends StatefulWidget {
   const Maps({super.key});
 
@@ -114,8 +116,14 @@ class _MapsState extends State<Maps> {
                       );
                     }
                     return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                        child: DottedCircularProgressIndicatorFb(
+                      size: 30,
+                      numDots: 9,
+                      dotSize: 3,
+                      defaultDotColor: Color(0xff3e13b5),
+                      currentDotColor: Colors.orange,
+                      secondsPerRotation: 1,
+                    ));
                   },
                 )
               : const GpsAccessScreen();

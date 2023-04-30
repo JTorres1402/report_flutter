@@ -25,6 +25,11 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color(0xff4338CA);
+    const secondaryColor = Color(0xff3e13b5);
+    const accentColor = Color(0xffffffff);
+    const errorColor = Color(0xffEF4444);
+
     StylishDialog loading = StylishDialog(
       context: context,
       alertType: StylishDialogType.PROGRESS,
@@ -55,8 +60,36 @@ class _ReportScreenState extends State<ReportScreen> {
                       children: [
                         DropdownButtonFormField<String>(
                             decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
                               labelText: 'Tipo de reporte',
+                              labelStyle: TextStyle(color: Colors.black),
+                              filled: true,
+                              fillColor: accentColor,
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: primaryColor, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 20.0),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: secondaryColor, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: errorColor, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: primaryColor, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
                             ),
                             value: selectItem,
                             items: items
@@ -69,11 +102,41 @@ class _ReportScreenState extends State<ReportScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFormField(
+                        TextField(
                           controller: _controllerCometario,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.black),
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
                             labelText: 'Comentario',
+                            labelStyle: TextStyle(color: Colors.black),
+                            filled: true,
+                            fillColor: accentColor,
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: primaryColor, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 20.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: secondaryColor, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: errorColor, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: primaryColor, width: 1.0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
                           ),
                         ),
                         const SizedBox(

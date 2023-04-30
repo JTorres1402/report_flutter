@@ -37,7 +37,7 @@ class _AccessButton extends StatelessWidget {
           height: 10,
         ),
         MaterialButton(
-          color: Colors.black,
+          color: const Color(0xff3e13b5),
           shape: const StadiumBorder(),
           child: const Text(
             'Solicitar permiso',

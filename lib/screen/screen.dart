@@ -1,3 +1,4 @@
+export 'package:proyecto_ps/screen/check_auth_screen.dart';
 export 'package:proyecto_ps/screen/login_screen.dart';
 export 'package:proyecto_ps/screen/list_screen.dart';
 export 'package:proyecto_ps/screen/profile_screen.dart';
