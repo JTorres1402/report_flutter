@@ -54,13 +54,13 @@ class _MapsState extends State<Maps> {
       for (var i = 0; i < _reportes.length; i++) {
         switch (_reportes[i].tipo) {
           case 'Robo':
-            urlImg = 'images/marker_1.png';
+            urlImg = 'assets/images/marker_1.png';
             break;
           case 'Accidente':
-            urlImg = 'images/marker_2.png';
+            urlImg = 'assets/images/marker_2.png';
             break;
           case 'Incendio':
-            urlImg = 'images/marker_3.png';
+            urlImg = 'assets/images/marker_3.png';
             break;
           default:
         }
