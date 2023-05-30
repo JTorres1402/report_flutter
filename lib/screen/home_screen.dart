@@ -13,10 +13,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late SharedPreferences _prefs;
 
+  /// Inicializa las preferencias compartidas.
   void _initPrefs() async {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  /// Obtiene el valor del ID almacenado en las preferencias compartidas.
   int _obtenerId() {
     return _prefs.getInt('id') ?? 0;
   }
@@ -60,25 +62,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: Colors.blue[300],
         bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.transparent,
-          color: const Color(0xff3e13b5),
+          color: Theme.of(context).primaryColor,
           items: items,
           index: index,
-          onTap: (selctedIndex) {
+          onTap: (selectedIndex) {
             setState(() {
-              index = selctedIndex;
+              index = selectedIndex;
             });
           },
           height: 70,
-          //backgroundColor: Colors.blue,
           animationDuration: const Duration(milliseconds: 300),
-          // animationCurve: ,
         ),
         body: getSelectedWidget(index: index));
   }
 
+  /// Devuelve el widget seleccionado según el índice proporcionado.
   Widget getSelectedWidget({required int index}) {
     Widget widget;
     switch (index) {

@@ -3,9 +3,13 @@ import '../models/usuario.dart';
 import '../service/usuario_service.dart';
 import '../widget/circular_progess.dart';
 
+/// Pantalla que muestra el perfil de un usuario.
 class ProfileScreen extends StatefulWidget {
+  /// ID del usuario.
   final int id;
-  const ProfileScreen({super.key, required this.id});
+
+  /// Constructor de la clase ProfileScreen.
+  const ProfileScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -14,21 +18,19 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff3e13b5),
         title: const Center(
           child: Text(
-            'Perfil',
+            'Perfil de Usuario',
             style: TextStyle(fontSize: 27),
           ),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.login_outlined),
-            tooltip: 'Cerrar sesion',
+            tooltip: 'Cerrar sesión',
             onPressed: () {
               logout();
               Navigator.pushReplacementNamed(context, 'login');
@@ -39,150 +41,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: FutureBuilder(
         future: loadUsuiariobyid(widget.id),
         builder: (context, AsyncSnapshot<List<UsuarioModel>> snapshot) {
-          // Usuario user = Usuario.fromJson(jsonEncode(snapshot));
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data == null) {
+              // Si no se pudo cargar la información del usuario, muestra un mensaje de error.
               return const Center(child: Text('Algo salió mal'));
             }
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 200),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: SizedBox(
-                      height: height * 0.28,
-                      child: LayoutBuilder(
-                        builder: (index, constraints) {
-                          return Stack(
-                            fit: StackFit.expand,
+            return Container(
+              padding: const EdgeInsets.all(20),
+              child: LayoutBuilder(builder: (index, constraints) {
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Center(
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Colors.grey[300],
+                              child: Icon(
+                                Icons.person,
+                                size: 80,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 60),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    '${snapshot.data![0].nombre} ${snapshot.data![0].apellido}',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Nunito',
-                                      fontSize: 39,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 50, right: 50),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Identificación:',
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 70,
-                                        ),
-                                        Text(
-                                          '${snapshot.data![0].idUsuario}',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 50, right: 50),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Teléfono:',
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 70,
-                                        ),
-                                        Text(
-                                          '${snapshot.data![0].telefono}',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 50, right: 50),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Correo:',
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 70,
-                                        ),
-                                        Text(
-                                          snapshot.data![0].correo,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                'Nombre:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[900],
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                // Muestra el nombre y apellido del usuario.
+                                '${snapshot.data![0].nombre} ${snapshot.data![0].apellido}',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Identificación:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[900],
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                // Muestra la identificación del usuario.
+                                '${snapshot.data![0].idUsuario}',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Teléfono:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[900],
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                // Muestra el teléfono del usuario.
+                                '${snapshot.data![0].telefono}',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Correo electrónico:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[900],
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                // Muestra el correo electrónico del usuario.
+                                snapshot.data![0].correo,
+                                style: const TextStyle(fontSize: 18),
                               ),
                             ],
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              }),
             );
           }
-          return const Center(
-              child: DottedCircularProgressIndicatorFb(
-            size: 30,
-            numDots: 9,
-            dotSize: 3,
-            defaultDotColor: Color(0xff3e13b5),
-            currentDotColor: Colors.orange,
-            secondsPerRotation: 1,
-          ));
+          // Muestra un indicador de progreso mientras se carga la información del usuario.
+          return Center(
+            child: DottedCircularProgressIndicatorFb(
+              size: 30,
+              numDots: 9,
+              dotSize: 3,
+              defaultDotColor: Theme.of(context).primaryColor,
+              currentDotColor: Colors.orange,
+              secondsPerRotation: 1,
+            ),
+          );
         },
       ),
     );

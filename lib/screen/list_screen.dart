@@ -6,7 +6,8 @@ import '../widget/circular_progess.dart';
 
 class ListReportScreen extends StatefulWidget {
   final int id;
-  const ListReportScreen({super.key, required this.id});
+
+  const ListReportScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   State<ListReportScreen> createState() => _ListReportScreenState();
@@ -18,7 +19,6 @@ class _ListReportScreenState extends State<ListReportScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff3e13b5),
         title: const Center(
           child: Text(
             'Reportes',
@@ -26,103 +26,80 @@ class _ListReportScreenState extends State<ListReportScreen> {
           ),
         ),
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<List<ReporteModel>>(
         future: loadReportebyid(widget.id),
-        builder: (context, AsyncSnapshot<List<ReporteModel>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data == null) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final reporte = snapshot.data![index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: Text(reporte.tipo),
+                      onTap: () {
+                        _showReportDetails(reporte);
+                      },
+                      subtitle: Text(reporte.comentarios),
+                    ),
+                  );
+                },
+              );
+            } else {
               return const Center(child: Text('Algo salió mal'));
             }
-            return ListView.builder(
-              itemCount: snapshot.data?.length ?? 0,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    title: Text(snapshot.data![index].tipo),
-                    onTap: () {
-                      StylishDialog(
-                        context: context,
-                        alertType: StylishDialogType.NORMAL,
-                        title: const Text('Detalles'),
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  'Tipo:',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  snapshot.data![index].tipo,
-                                  style: const TextStyle(fontSize: 17),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Text(
-                                  'Fecha de publicación:',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '${snapshot.data![index].fecha}',
-                                  style: const TextStyle(fontSize: 17),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Text(
-                                  'Estado:',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  snapshot.data![index].estado,
-                                  style: const TextStyle(fontSize: 17),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ).show();
-                    },
-                    subtitle: Text(snapshot.data![index].comentarios),
-                  ),
-                );
-              },
-            );
           }
-          return const Center(
-              child: DottedCircularProgressIndicatorFb(
-            size: 30,
-            numDots: 9,
-            dotSize: 3,
-            defaultDotColor: Color(0xff3e13b5),
-            currentDotColor: Colors.orange,
-            secondsPerRotation: 1,
-          ));
+          return Center(
+            child: DottedCircularProgressIndicatorFb(
+              size: 30,
+              numDots: 9,
+              dotSize: 3,
+              defaultDotColor: Theme.of(context).primaryColor,
+              currentDotColor: Colors.orange,
+              secondsPerRotation: 1,
+            ),
+          );
         },
       ),
+    );
+  }
+
+  /// Muestra los detalles del reporte en un diálogo elegante.
+  void _showReportDetails(ReporteModel reporte) {
+    StylishDialog(
+      context: context,
+      alertType: StylishDialogType.NORMAL,
+      title: const Text('Detalles'),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDetailRow('Tipo:', reporte.tipo),
+          _buildDetailRow('Fecha de publicación:', reporte.fecha ?? ''),
+          _buildDetailRow('Estado:', reporte.estado),
+        ],
+      ),
+    ).show();
+  }
+
+  /// Construye una fila de detalles en el diálogo.
+  Widget _buildDetailRow(String label, String value) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(width: 5),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 17),
+        ),
+      ],
     );
   }
 }

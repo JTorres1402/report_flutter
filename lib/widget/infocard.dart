@@ -42,7 +42,10 @@ class InfoCard extends StatelessWidget {
             )
           ],
           gradient: RadialGradient(
-            colors: [Color.fromARGB(200, 62, 19, 181), Color(0xff3e13b5)],
+            colors: [
+              const Color.fromARGB(197, 33, 30, 209),
+              Theme.of(context).primaryColor
+            ],
             focal: Alignment.topCenter,
             radius: .85,
           )),
@@ -89,8 +92,8 @@ class InfoCard extends StatelessWidget {
                       Text(subInfoTitle),
                       Text(
                         subInfoText,
-                        style: const TextStyle(
-                          color: Color(0xff3e13b5),
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:proyecto_ps/screen/screen.dart';
 import 'package:proyecto_ps/service/usuario_service.dart';
 

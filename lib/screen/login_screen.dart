@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:proyecto_ps/screen/register_screen.dart';
 import 'package:proyecto_ps/service/usuario_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
@@ -16,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
   late SharedPreferences _prefs;
   bool passToggle = true;
   bool isChecked = false;
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _initPrefs();
   }
 
-  void _initPrefs() async {
+  Future<void> _initPrefs() async {
     _prefs = await SharedPreferences.getInstance();
   }
 
@@ -38,13 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    StylishDialog loading = StylishDialog(
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    final StylishDialog loading = StylishDialog(
       context: context,
       alertType: StylishDialogType.PROGRESS,
       style: DefaultStyle(
-        progressColor: const Color(0xff3e13b5),
+        progressColor: Theme.of(context).primaryColor,
       ),
       title: const Text('Cargando'),
     );
@@ -68,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.person_pin,
-                            color: Color.fromARGB(255, 15, 36, 153),
+                            color: Theme.of(context).primaryColor,
                             size: 140,
                           ),
                           const Text(
@@ -95,77 +96,86 @@ class _LoginScreenState extends State<LoginScreen> {
                             child:
                                 PasswordInput(inputController: passController),
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'No tienes cuenta? ',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Registrate aqui!',
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.blue),
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: (height * 2) / 100,
                           ),
-                          DecoratedBox(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment(1, 1),
-                                    colors: [
-                                      Color(0xff5029ff),
-                                      Color(0xff4b21e6),
-                                      Color(0xff451acd),
-                                      Color(0xff3e13b5),
-                                      Color(0xff370d9d),
-                                      Color(0xff2f0687),
-                                      Color(0xff270271),
-                                      Color(0xff1f005c),
-                                    ])),
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  elevation: MaterialStateProperty.all(0),
-                                  alignment: Alignment.center,
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.only(
-                                          right: 75,
-                                          left: 75,
-                                          top: 15,
-                                          bottom: 15)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.transparent),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                  )),
-                              onPressed: () async {
-                                if (emailController.text != '' &&
-                                    passController.text != '') {
-                                  loading.show();
-                                  final user = emailController.text;
-                                  final pass = passController.text;
-                                  var reponse = await login(user, pass);
-                                  Persona personLogin = Persona.fromJson(
-                                      jsonDecode(reponse.toString()));
-                                  if (personLogin.message == 'OK') {
-                                    // ignore: use_build_context_synchronously
-                                    Navigator.pushNamed(context, "inicio");
-                                    _setId(personLogin.id!);
-                                  } else {
-                                    loading.dismiss();
-                                    // ignore: use_build_context_synchronously
-                                    StylishDialog(
-                                      context: context,
-                                      alertType: StylishDialogType.ERROR,
-                                      title: const Text('Error'),
-                                      content: Text(personLogin.message),
-                                    ).show();
-                                  }
+                          TextButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).primaryColor,
+                              ),
+                              padding:
+                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.only(
+                                    right: 75, left: 75, top: 15, bottom: 15),
+                              ),
+                            ),
+                            onPressed: () async {
+                              if (emailController.text.isNotEmpty &&
+                                  passController.text.isNotEmpty) {
+                                loading.show();
+                                final user = emailController.text;
+                                final pass = passController.text;
+                                final response = await login(user, pass);
+                                final personLogin = Persona.fromJson(
+                                    jsonDecode(response.toString()));
+                                if (personLogin.message == 'OK') {
+                                  Navigator.pushNamed(context, "inicio");
+                                  _setId(personLogin.id!);
                                 } else {
+                                  loading.dismiss();
                                   StylishDialog(
                                     context: context,
                                     alertType: StylishDialogType.ERROR,
                                     title: const Text('Error'),
-                                    content:
-                                        const Text('Debes ingresar los datos'),
+                                    content: Text(personLogin.message),
                                   ).show();
                                 }
-                              },
-                              child: const Text(
-                                'Iniciar sesion',
+                              } else {
+                                StylishDialog(
+                                  context: context,
+                                  alertType: StylishDialogType.ERROR,
+                                  title: const Text('Error'),
+                                  content:
+                                      const Text('Debes ingresar los datos'),
+                                ).show();
+                              }
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(1),
+                              child: Text(
+                                'Iniciar sesión',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
@@ -186,8 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 class Persona {
-  String message;
-  int? id;
+  final String message;
+  final int? id;
 
   Persona({
     required this.message,

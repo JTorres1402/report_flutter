@@ -59,7 +59,7 @@ class _EnableGpsMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      'Debe de habilitar el GPS',
+      'Debes habilitar el GPS',
       style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
     );
   }

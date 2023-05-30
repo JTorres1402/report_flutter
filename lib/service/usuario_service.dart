@@ -19,6 +19,29 @@ Future<List<UsuarioModel>> loadUsuiario() async {
   return usuario;
 }
 
+Future<String> registerUser(
+    identificacion, nombre, apellido, telefono, correo, contrasena) async {
+  final url = Uri.parse('$_baseUrl/usuario');
+  final headers = {'Content-Type': 'application/json'};
+  final body = jsonEncode({
+    'id_usuario': identificacion,
+    'nombre': nombre,
+    'apellido': apellido,
+    'telefono': telefono,
+    'correo': correo,
+    'contrasena': contrasena,
+  });
+
+  final response = await http.post(url, headers: headers, body: body);
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    return responseData;
+  } else {
+    final responseData = jsonDecode(response.body);
+    return responseData;
+  }
+}
+
 Future<List<UsuarioModel>> loadUsuiariobyid(int id) async {
   // ignore: prefer_interpolation_to_compose_strings
   final url = Uri.parse('$_baseUrl/usuario/' + id.toString());
@@ -86,13 +109,4 @@ Future<String> readToken() async {
 Future logout() async {
   await storage.deleteAll();
   return;
-}
-
-Future<String?> nombreCompleto() async {
-  final nombre = await storage.read(key: 'nombre');
-  final apellido = await storage.read(key: 'apellido');
-
-  String nombreComple = "${nombre!} ${apellido!}";
-
-  return nombreComple;
 }
