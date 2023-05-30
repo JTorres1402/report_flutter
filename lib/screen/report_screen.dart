@@ -60,7 +60,9 @@ class _ReportScreenState extends State<ReportScreen> {
                           // Selector de tipo de reporte
                           decoration: InputDecoration(
                             labelText: 'Tipo de reporte',
-                            labelStyle: const TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
                             filled: true,
                             fillColor: accentColor,
                             border: OutlineInputBorder(
@@ -111,7 +113,9 @@ class _ReportScreenState extends State<ReportScreen> {
                           // Campo de texto para el comentario
                           decoration: InputDecoration(
                             labelText: 'Comentario',
-                            labelStyle: const TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
                             filled: true,
                             fillColor: accentColor,
                             border: OutlineInputBorder(

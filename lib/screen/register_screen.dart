@@ -57,12 +57,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: ListView(
             children: [
+              const SizedBox(height: 5),
               TextFormField(
                 controller: identificationController,
                 decoration: InputDecoration(
                   label: const Text('Identificación'),
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                   filled: true,
                   fillColor: accentColor,
@@ -98,8 +99,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: firstNameController,
                 decoration: InputDecoration(
                   label: const Text('Nombre'),
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                   filled: true,
                   fillColor: accentColor,
@@ -135,8 +136,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: lastNameController,
                 decoration: InputDecoration(
                   label: const Text('Apellido'),
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                   filled: true,
                   fillColor: accentColor,
@@ -164,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 validator: MultiValidator([
-                  RequiredValidator(errorText: 'Se requiere apellido'),
+                  RequiredValidator(errorText: 'Se requiere el apellido'),
                 ]),
               ),
               const SizedBox(height: 16),
@@ -172,8 +173,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: emailController,
                 decoration: InputDecoration(
                   label: const Text('Correo electrónico'),
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                   filled: true,
                   fillColor: accentColor,
@@ -211,8 +212,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: phoneController,
                 decoration: InputDecoration(
                   label: const Text('Teléfono'),
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                   filled: true,
                   fillColor: accentColor,
@@ -252,8 +253,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: passwordController,
                 decoration: InputDecoration(
                   label: const Text('Contraseña'),
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
                   filled: true,
                   fillColor: accentColor,

@@ -78,9 +78,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Text(
                                 'Nombre:',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue[900],
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -88,38 +88,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // Muestra el nombre y apellido del usuario.
                                 '${snapshot.data![0].nombre} ${snapshot.data![0].apellido}',
                                 style: const TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 22,
                                 ),
                               ),
                               const SizedBox(height: 20),
                               Text(
                                 'Identificación:',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue[900],
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               const SizedBox(height: 5),
                               Text(
                                 // Muestra la identificación del usuario.
                                 '${snapshot.data![0].idUsuario}',
-                                style: const TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 20),
                               ),
                               const SizedBox(height: 20),
                               Text(
                                 'Teléfono:',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue[900],
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               const SizedBox(height: 5),
                               Text(
                                 // Muestra el teléfono del usuario.
                                 '${snapshot.data![0].telefono}',
-                                style: const TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 20),
                               ),
                               const SizedBox(height: 20),
                               Text(
@@ -127,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue[900],
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               const SizedBox(height: 5),

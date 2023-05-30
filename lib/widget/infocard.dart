@@ -43,7 +43,7 @@ class InfoCard extends StatelessWidget {
           ],
           gradient: RadialGradient(
             colors: [
-              const Color.fromARGB(197, 33, 30, 209),
+              const Color.fromARGB(197, 17, 78, 168),
               Theme.of(context).primaryColor
             ],
             focal: Alignment.topCenter,
