@@ -87,7 +87,6 @@ Future login(id, pass) async {
   final response = await http.post(url, headers: headers, body: body);
   if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
-    print(jsonDecode(response.body));
     Map<String, dynamic> responseJson = {
       'message': responseData['message'],
       'id': responseData['id'],

@@ -1,4 +1,4 @@
-import 'dart:ui';
+// ignore: library_prefixes
 import 'dart:math' as Math;
 
 import 'package:flutter/material.dart';
@@ -49,19 +49,17 @@ class _DottedCircularProgressIndicatorFbState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: widget.size,
       height: widget.size,
       // decoration: BoxDecoration(color: Colors.red), //for debugging purposes
       child: CustomPaint(
-        child: Container(),
         painter: DottedCircularProgressIndicatorPainterFb(
             dotColor: widget.defaultDotColor,
             currentDotColor: widget.currentDotColor,
@@ -69,6 +67,7 @@ class _DottedCircularProgressIndicatorFbState
             numDots: widget.numDots,
             currentDotNum: animation.value,
             dotWidth: widget.dotSize),
+        child: Container(),
       ),
     );
   }

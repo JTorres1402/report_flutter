@@ -13,8 +13,6 @@ class _PasswordInputState extends State<PasswordInput> {
   bool passToggle = true;
   @override
   Widget build(BuildContext context) {
-    //const primaryColor = Color(0xff4338CA);
-    const secondaryColor = Color(0xff3e13b5);
     const accentColor = Color(0xffffffff);
     const errorColor = Color(0xffEF4444);
 
@@ -33,9 +31,7 @@ class _PasswordInputState extends State<PasswordInput> {
           child: TextField(
             controller: widget.inputController,
             obscureText: passToggle,
-            onChanged: (value) {
-              //Do something wi
-            },
+            onChanged: (value) {},
             keyboardType: TextInputType.visiblePassword,
             style: const TextStyle(fontSize: 18, color: Colors.black),
             decoration: InputDecoration(

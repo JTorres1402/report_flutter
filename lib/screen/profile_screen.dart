@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // Muestra el nombre y apellido del usuario.
                                 '${snapshot.data![0].nombre} ${snapshot.data![0].apellido}',
                                 style: const TextStyle(
-                                  fontSize: 22,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 20),
@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Text(
                                 'Correo electrónico:',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,
                                 ),
@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Text(
                                 // Muestra el correo electrónico del usuario.
                                 snapshot.data![0].correo,
-                                style: const TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ],
                           ),

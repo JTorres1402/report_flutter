@@ -8,7 +8,7 @@ String _baseUrl = 'https://apipr0yect.azurewebsites.net/api/reporte';
 // Carga los reportes filtrados por ID
 Future<List<ReporteModel>> loadReportebyid(int id) async {
   // Construye la URL completa concatenando el ID proporcionado
-  final url = Uri.parse('$_baseUrl/' + id.toString());
+  final url = Uri.parse('$_baseUrl/$id');
 
   // Realiza una solicitud GET a la URL y obtiene la respuesta
   var resp = await http.get(url);
